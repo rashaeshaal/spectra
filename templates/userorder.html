@@ -1,0 +1,60 @@
+{% extends 'navbar.html' %}
+{% block title %}order{% endblock title %}
+
+{% block content %}
+{% load static %}
+
+<div style="margin-top: 5rem;"  class="container mt-6">
+    <main class="col-md-9">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2">
+                    <h6>Date #</h6>
+                </div>
+                <div class="col-md-2">
+                    <h6>Order ID</h6>
+                </div>
+                <div class="col-md-2">
+                    <h6>Total Price</h6>
+                </div>
+                <div class="col-md-2">
+                    <h6>Payment Method</h6>
+                </div>
+                <div class="col-md-2">
+                    <h6>Status</h6>
+                </div>
+                <div class="col-md-2">
+                    <h6>Orders</h6>
+                </div>
+            </div>
+            {% for order in orders %}
+            <div class="row">
+                <div class="col-md-2">
+                    <a href="{% url 'view_order' order.id %}">{{ order.order_date }}</a>
+                </div>
+                <div class="col-md-2">
+                    {{ order.id }}
+                </div>
+                <div class="col-md-2">
+                    {{ order.total_amount }}
+                </div>
+                <div class="col-md-2">
+                    {{ order.payment_method }} 
+                </div>
+                <div class="col-md-2">
+                    {{ order.status }} 
+                </div>
+                <div class="col-md-2">
+                    {% if order.is_canceled %}
+                        <span class="text-muted">Canceled</span>
+                    {% else %}
+                        <a href="{% url 'view_order' order.id %}" class="btn btn-primary btn-sm">View Order</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</div>
+
+{% endblock content %}

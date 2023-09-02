@@ -1,0 +1,104 @@
+{% extends 'baseadmin.html' %}
+
+{% block content %}
+
+<section style="margin-top: 1rem;" class="h-100 bg-light">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-10 col-xl-8">
+          <div class="card" style="border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+            <div class="card-header px-4 py-5">
+              <h5 class="text-muted mb-0"> Order, <span style="color: #4586d1;">{{ order.user.first_name }}</span>!</h5>
+            </div>
+            <div class="card-body p-4">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                
+              </div>
+              <div class="card shadow-0 border mb-4">
+                <div class="card-body">
+                  <div class="row">
+                    {% for item in order_items %}
+                    <div class="col-md-2">
+                        <img style=" width: 5rem;height: 5rem;" src="{{ item.product.product_image.url }}" alt="{{ item.product.product_name }}">
+                    </div>
+                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <p class="text-muted mb-0">{{ item.product.product_name }}</p>
+                    </div>
+                    {% comment %} <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <p class="text-muted mb-0 small">White</p>
+                    </div>
+                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <p class="text-muted mb-0 small">Capacity: 64GB</p>
+                    </div> {% endcomment %}
+                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <p class="text-muted mb-0 small"> {{ item.quantity }}</p>
+                    </div>
+                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
+                      <p class="text-muted mb-0 small">₹{{ item.product_price }}</p>
+                    </div>
+                   
+                  </div>
+                  <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
+                  <div class="row d-flex align-items-center">
+                    <div class="col-md-2">
+                      <!-- <p class="text-muted mb-0 small">Track Order</p> -->
+                    </div>
+                    <div class="col-md-10">
+                      <div class="progress" style="height: 6px; border-radius: 16px;">
+                        <!-- <div class="progress-bar" role="progressbar"
+                          style="width: 65%; border-radius: 16px; background-color: hwb(229 31% 6%);" aria-valuenow="65"
+                          aria-valuemin="0" aria-valuemax="100"></div> -->
+                      </div>
+                      
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+             
+             
+              
+  
+              <div class="d-flex justify-content-between pt-2">
+                <p class="fw-bold mb-0">Order Details</p>
+                <p class="text-muted mb-0"><span class="fw-bold me-4">Total</span>  ₹ {{ order.total_amount }} </p>
+            
+                <p class="text-muted mb-0"><span class="fw-bold me-4">STATUS</span>  {{ order.status }} </p>
+              
+              </div>
+   
+              <div class="d-flex justify-content-between pt-2">
+                <h6 class="text-muted">Delivery to</h6>
+                
+               
+              </div>
+  
+              <div class="d-flex justify-content-between">
+                <p>{{ order.user.first_name }} <br>
+                    Phone: {{ order.user.mobile }}<br>
+                    Email: {{ order.user.email }} <br>
+                    Location: {{ order.address.address_line_1 }} <br>
+                    P.O. :{{ order.address.postcode }}
+                </p>
+              </div>
+  
+        
+            </div>
+            <div class="card-footer border-0 px-4 py-5"
+              style="background-color: hwb(209 1% 19%); border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+              <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">Total
+                paid: <span class="h2 mb-0 ms-2"> ₹ {{ order.total_amount }} </span></h5>
+                
+              
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+ 
+
+{% endblock %}
+

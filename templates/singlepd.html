@@ -1,0 +1,148 @@
+{% extends 'homeindex.html' %}
+{% block title %}single_product{% endblock title %}
+{% block content %}
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-5 ftco-animate">
+                <div class="zoom-image-container">
+                    <div id="productCarousel" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for image in single_product.productimage_set.all %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <img src="{{ image.image.url }}" class="img-fluid zoom-image" alt="{{ single_product.product_name }}">
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                    <div class="zoom-circle"></div>
+                </div>
+            </div>
+            <div class="col-lg-6 product-details pl-md-5 ftco-animate">
+                <h3><a href="#">{{ single_product.product_name }}</a></h3>
+                <p>Price: ₹ {{ single_product.product_price }}</p>
+                <!-- {% if single_product.offer_price %}
+                <p><del>Price: ₹{{ single_product.product_price }}</del></p>
+                <p>Offer Price: ₹{{ single_product.offer_price }}</p>
+                {% else %}
+                <p>Price: ₹{{ single_product.product_price }}</p>
+                {% endif %} -->
+                <p>{{ single_product.product_details }}</p>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="form-group d-flex">
+                            <div class="select-wrap">
+                                <!-- Add any additional form fields here if needed -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if single_product.quantity <= 0 %}
+                    <h5 class="text-danger">Out of Stock</h5>
+                {% else %}
+                    <a href="{% url 'add_cart' single_product.id %}" class="btn btn-black py-3 px-5 mr-2">
+                        Add to Cart
+                    </a>
+                {% endif %}
+                <a href="{% url 'cartpage' %}" class="btn btn-outline-primary">
+                    <span class="text">View Cart</span><i class="fas fa-eye"></i>
+                </a>
+                <a href="{% url 'add_to_wishlist' single_product.id %}" class="btn btn-outline-primary">
+                    <span class="text">Add to Wishlist</span><i class="ion-ios-heart"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    .zoom-image-container {
+        overflow: hidden;
+        position: relative;
+    }
+
+    .zoom-image {
+        transition: transform 0.3s ease;
+        max-width: 100%;
+        display: block;
+    }
+
+    .zoom-circle {
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+        border: 2px solid #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        transform: scale(1);
+        transition: transform 0.3s ease;
+    }
+</style>
+<!-- Add these links to your HTML file -->
+<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Function to handle the zoom effect
+    function handleZoom(event) {
+        const imageContainer = event.currentTarget;
+        const image = imageContainer.querySelector('.zoom-image');
+        const zoomCircle = imageContainer.querySelector('.zoom-circle');
+
+        // Get the position of the mouse pointer relative to the image container
+        const rect = imageContainer.getBoundingClientRect();
+        const offsetX = event.clientX - rect.left;
+        const offsetY = event.clientY - rect.top;
+
+        // Check if the mouse pointer is within the image boundaries
+        if (
+            offsetX >= 0 && offsetX <= image.width &&
+            offsetY >= 0 && offsetY <= image.height
+        ) {
+            // Calculate the position of the zoom circle and set its size
+            const circleSize = 100; // Adjust this value to change the size of the zoom circle
+            const circleX = offsetX - circleSize / 2;
+            const circleY = offsetY - circleSize / 2;
+
+            // Apply the zoom effect by changing the scale of the image and zoom circle
+            image.style.transformOrigin = `${offsetX}px ${offsetY}px`;
+            image.style.transform = 'scale(2.2)';
+
+            zoomCircle.style.width = circleSize + 'px';
+            zoomCircle.style.height = circleSize + 'px';
+            zoomCircle.style.left = circleX + 'px';
+            zoomCircle.style.top = circleY + 'px';
+            zoomCircle.style.transform = 'scale(2)'; // Adjust this value to change the zoom circle's zoom level
+        } else {
+            // Hide the zoom circle if the mouse is outside the image boundaries
+            zoomCircle.style.transform = 'scale(0)';
+        }
+    }
+
+    // Function to reset the zoom effect and hide the zoom circle
+    function resetZoom(event) {
+        const imageContainer = event.currentTarget;
+        const image = imageContainer.querySelector('.zoom-image');
+        const zoomCircle = imageContainer.querySelector('.zoom-circle');
+
+        image.style.transform = 'scale(1)';
+        zoomCircle.style.transform = 'scale(0)';
+    }
+
+    // Attach event listeners to the image container
+    const imageContainers = document.querySelectorAll('.zoom-image-container');
+    imageContainers.forEach(container => {
+        container.addEventListener('mousemove', handleZoom);
+        container.addEventListener('mouseleave', resetZoom);
+    });
+</script>
+
+{% endblock content %}

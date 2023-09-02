@@ -1,0 +1,18 @@
+{% extends 'homeindex.html' %}
+
+{% block title %}order {% endblock title %}
+
+{% block content %}
+<h1>Order Confirmation</h1>
+<p>Your order has been placed successfully!</p>
+<p>Order ID: {{ order.id }}</p>
+<p>Order Date: {{ order.order_date }}</p>
+<p>Total Amount: {{ order.total_amount }}</p>
+<p>Shipping Address:</p>
+<p>{{ order.address.first_name }} {{ order.address.last_name }}</p>
+<p>{{ order.address.address_line_1 }}</p>
+<p>{{ order.address.address_line_2 }}</p>
+<p>{{ order.address.area }}, {{ order.address.state }}, {{ order.address.postcode }}</p>
+<p>Phone Number: {{ order.address.phone_number }}</p>
+
+{% endblock content %}

@@ -1,0 +1,90 @@
+{% extends 'baseadmin.html' %}
+{% block title %}Category{% endblock title %}
+{% block content %}
+<div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryModalTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addCategoryModalTitle">Add Category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="{% url 'add_category' %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="category-name">Category Name</label>
+            <input type="text" class="form-control" id="category-name" name="category_name" required pattern = "^[a-zA-Z]+$" title="Only letters are allowed (no spaces or numbers)">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+      <div class="col-sm-12 col-xl-6">
+          <div class="bg-light rounded h-100 p-4">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+              <h6 class="mb-4">Add Category</h6></button>
+              <h3 class="mb-4 mt-" style="text-align: center;">Category Table</h3>
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th scope="col">Category Id</th>
+                          <th scope="col">Category Name</th>  
+                          <th scope="col">Actions</th> 
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% for categories in categories %}
+                      <tr>
+                          <td scope="row">{{ categories.id }}</td>
+                          <td>{{ categories.name}}</td>
+                          <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ categories.id }}" onclick="editCategoryModal({{ categories.id }}, '{{ categories.category_name }}')">Edit</button>
+
+                          
+
+
+                            <div class="modal fade" id="editCategoryModal{{ categories.id }}" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ categories.id }}" onclick="editCategoryModal({{ categories.id }}, '{{ categories.category_name }}')">Edit</button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <!-- Category form -->
+                                    <form method="POST" action="{% url 'edit_category' categories.id %}" onsubmit="handleEditCategoryForm(event)">
+
+                                      {% csrf_token %}
+                                      <input type="hidden" name="category_id" value="{{ categories.id }}">
+                                      <div class="mb-3">
+                                        <label for="editCategoryName" class="form-label">Category Name</label>
+                                        <input type="text" class="form-control" id="editCategoryName" name="category_name" value="{{ categories.category_name }}" required>
+                                      </div>
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            
+                                
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+{% endblock content %}
+
+

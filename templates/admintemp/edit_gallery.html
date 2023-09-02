@@ -1,0 +1,36 @@
+{% extends 'baseadmin.html' %}
+{% block title %}Edit Product Gallery{% endblock title %}
+{% block content %}
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Edit Product Gallery</h6>
+                <h2>{{ product.product_name }}</h2>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <!-- Display existing images -->
+                    <h3>Existing Images:</h3>
+                    <div class="row">
+                        {% for image in product_images %}
+                            <div class="col-3">
+                                <img src="{{ image.image.url }}" alt="{{ product.product_name }} Image" class="img-fluid mb-2">
+                                <a href="{% url 'delete_image' image.id %}" class="btn btn-danger">Delete</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    
+                    <!-- Add new images -->
+                    
+                    <input type="file" name="new_images" accept="image/*" multiple>
+                    
+                    <!-- Submit button -->
+                    <input type="submit" class="btn btn-primary" value="Save Gallery">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

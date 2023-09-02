@@ -1,0 +1,29 @@
+{% extends 'homeindex.html' %}
+{% load static %}
+{% block title %}Payment Success{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mt-5">
+        <div class="col-md-8 offset-md-2">
+            <div class="text-center" style="margin-top:20%">
+                {% if status == "Success" %}
+                <h2>THANKS YOUR PAYMENT HAS BEEN RECEIVED</h2>
+                <a href="{% url 'userorder' %}" class="btn btn-primary"></a>>orderview</a>
+                {% else %}
+                <h2>SORRY, YOUR PAYMENT HAS BEEN FAILED</h2>
+                {% endif %}
+            </div>
+            
+            <div class="d-flex justify-content-center mt-4">
+                <a href="{% url 'productpage' %}" class="btn btn-primary">Continue Shopping</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+
+

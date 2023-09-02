@@ -1,0 +1,110 @@
+{% extends 'baseadmin.html' %}
+{% block title %}brands{% endblock title %}
+{% block content %}
+
+<div class="col-sm-12 col-xl-6">
+    <div class="bg-light rounded h-100 p-4">
+        <h6 class="mb-4">Brands</h6>
+        
+        <!-- Add Brand Button -->
+        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addBrandModal">
+            Add Brand
+        </button>
+        
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Brand Id</th>
+                    <th scope="col">Brand Name</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for brand in brand %}
+                <tr>
+                    <th scope="row">{{ brand.id }}</th>
+                    <td>{{ brand.brand_name }}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBrandModal{{ brand.id }}" onclick="editBrandModal('{{ brand.id }}', '{{ brand.brand_name }}')">Edit</button>
+                    </td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add Brand Modal -->
+<div class="modal fade" id="addBrandModal" tabindex="-1" aria-labelledby="addBrandModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addBrandModalLabel">Add Brand</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Add form fields here -->
+                <form method="POST" action="{% url 'add_brand' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="brand_name">Brand Name</label>
+                        <input type="text" class="form-control" id="brand_name" name="brand_name" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Edit Brand Modal -->
+{% for brand in brands %}
+<div class="modal fade" id="editBrandModal{{ brand.id }}" tabindex="-1" aria-labelledby="editBrandModalLabel{{ brand.id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editBrandModalLabel{{ brand.id }}">Edit Brand</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Edit form fields here -->
+                <form id="editBrandForm{{ brand.id }}" method="POST" action="{% url 'edit_brand' brand.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="brand_id" value="{{ brand.id }}">
+                    <div class="form-group">
+                        <label for="editBrandName{{ brand.id }}">Brand Name</label>
+                        <input type="text" class="form-control" id="editBrandName{{ brand.id }}" name="brand_name" value="{{ brand.brand_name }}" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const editButtons = document.querySelectorAll('.edit-button');
+        editButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const brandId = this.getAttribute('data-brand-id');
+                const brandName = this.getAttribute('data-brand-name');
+                const modal = new bootstrap.Modal(document.getElementById('editBrandModal' + brandId));
+                const inputField = modal._element.querySelector('#editBrandName' + brandId);
+                inputField.value = brandName;
+                modal.show();
+            });
+        });
+    });
+</script>
+{% endfor %}
+
+
+
+{% endblock content %}

@@ -1,0 +1,19 @@
+{% extends 'baseadmin.html' %}
+{% block title %}Delete Gallery Confirmation{% endblock title %}
+{% block content %}
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Delete Gallery Confirmation</h6>
+                <p>Are you sure you want to delete the product '{{ product.product_name }}' from the gallery?</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <a href="{% url 'product_gallery_list' %}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

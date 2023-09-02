@@ -1,0 +1,72 @@
+{% extends 'homeindex.html' %}
+{% block title %}whislist{% endblock title %}
+{% block content %}
+
+
+<section class="ftco-section ftco-cart">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 ftco-animate">
+        <div class="cart-list">
+          <table class="table">
+            <thead class="thead-primary">
+              <tr class="text-center">
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Add To Cart</th>
+                <th>Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in wishlists %}
+              <tr class="text-center">
+                <td class="product-remove">
+                  <a href="">
+                    <span class="ion-ios-close"></span>
+                  </a>
+                </td>
+                <td class="image-prod">
+                    <div class="aside">
+                        <img src="/media/{{ item.product.product_image }}" class="img" alt="{{ item.product.product_name }}">
+                    </div>
+                </td>
+
+              
+
+                <td class="product-name">
+                  <h3>{{ item.product.product_name }}</h3>
+                  <!-- <p>{{ item.product.product_brand }}</p> -->
+                </td>
+
+                <td class="price">₹{{ item.product.product_price }}</td>
+
+                <td class="product-remove">
+                  <a href="{% url 'add_cart' item.product.id %}" class="btn btn-primary py-2 px-3">
+                    <span>Add to Cart</span>
+                  </a>
+                </td>
+
+                <td class="product-remove">
+                  <a href="{% url 'remove_wishlist' item.product.id %}" class="remove">
+                    <span>Remove</span>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
+
+
+    
+     
+
+

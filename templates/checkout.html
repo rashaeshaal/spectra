@@ -1,0 +1,181 @@
+{% extends 'homeindex.html' %}
+{% load static %}
+{% block title %}checkout{% endblock title %}
+
+{% block content %}
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10 ftco-animate">
+                
+                <form action="{% url 'place_order' %}" class="billing-form" method="POST">
+                    {% csrf_token %}
+                    <h3 class="mb-4 billing-heading">Billing Details</h3>
+                    <div class="row align-items-end">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="firstname">First Name</label>
+                                <input type="text" class="form-control" name="first_name" placeholder="Enter a first_name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{% url 'manage_addresses' %}" class="btn btn-primary py-2 px-2">Manage address</a>
+                            <div class="form-group">
+                                <label for="lastname">Last Name</label>
+                                <input type="text" class="form-control" name="last_name" placeholder="Enter a last_name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+							<div class="form-group">
+								<label for="country">Phone</label>
+								<input type="text" class="form-control" name="phone_number" placeholder="Enter a phone_number" required>
+							</div>
+						</div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="address">Address 1</label>
+                                <input type="text" class="form-control" name="address_line_1" placeholder="House number and street name" required>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="address">Address 2</label>
+                                <input type="text" class="form-control" name="address_line_2" placeholder="Apartment, suite, unit, etc. (optional)">
+                            </div>
+                        </div> -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="postcodezip">Postcode</label>
+                                <input type="text" class="form-control" name="postcode" placeholder="Enter a pincode" required>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="towncity">Area</label>
+                                <input type="text" class="form-control" name="area" placeholder="" required>
+                            </div>
+                        </div> -->
+                        <!-- <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="phone">State</label>
+                                <input type="text" class="form-control" name="state" placeholder="" required>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- <h3 class="mb-4 billing-heading">Saved Addresses</h3>
+                    {% for address in Address %}
+                    <div>
+                        <input type="radio" name="selected_address" value="{{ address.id }}" id="address_{{ address.id }}">
+                        <label for="address_{{ address.id }}">
+                            {{ address.first_name }} {{ address.last_name }}, {{ address.address_line_1 }}, {{ address.area }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                    
+                    <h3 class="mb-4 billing-heading">Add New Address</h3>
+                    {{ address_form.as_p }} -->
+                 
+                <!-- END
+            
+                <!-- Order Summary -->
+                <div class="col-md-6">
+                    <div class="cart-detail bg-light p-3 p-md-4">
+                        <h3 class="billing-heading mb-4">Payment Method</h3>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="payment_mode" id="flexRadioDefault1" value="cod" required>
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        Cash on Delivery (COD)
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="payment_mode" id="flexRadioDefault2" value="razorpay" required>
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                        Razorpay
+                                    </label>
+                                </div>
+                                <p class="d-flex">
+                                    <span>Total price</span>
+                                    <span>₹{{ total }}</span>
+                                </p>
+                               
+                                <p class="d-flex">
+                                    <span>Total Discount</span>
+                                    <span>₹{{ discount_price }}</span>
+                                </p>
+                               
+                                <!-- <p class="d-flex">
+                                    <span>Total Discount</span>
+                                    <span >₹{{ grand_total}}</span>
+                                </p> -->
+                               
+                                
+                                   
+                                     
+                                   
+
+    
+                               
+                                <input type="submit" value="Place an order" class="btn btn-primary py-3 px-4">  
+                            </div>
+                        </div>  
+                    </div>   
+                    </div> 
+                </form>  
+                </div>
+			    
+            </div> <!-- .col-md-8 -->
+        </div>
+    </div>
+</section> <!-- .section -->
+
+
+<script>
+    $(document).ready(function () {
+        var totalDiscount = '{{ total_discount }}';
+        var totalAfterDiscount = '{{ total }}';
+            
+            // ... Your other JavaScript code ...
+    
+            // Update the displayed total after applying coupon discount
+        $('#total-discount').text('₹' + totalDiscount);
+    
+            // Calculate the grand total after applying coupon discount
+        var grandTotal = totalAfterDiscount - totalDiscount;
+        $('#grand-total').text('₹' + grandTotal);
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        var totalDiscount = '{{ total_discount }}';
+        console.log('Total Discount:', totalDiscount);
+        
+        // ... Your other JavaScript code ...
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        var totalDiscount = parseFloat('{{ total_discount }}');
+        var totalAfterDiscount = parseFloat('{{ total }}');
+        
+        // Check if the variables are correctly parsed
+        console.log('Total Discount:', totalDiscount);
+        console.log('Total After Discount:', totalAfterDiscount);
+        
+        // Update the displayed total after applying coupon discount
+        $('#total-discount').text('₹' + totalDiscount.toFixed(2));
+    
+        // Calculate the grand total after applying coupon discount
+        var grandTotal = totalAfterDiscount - totalDiscount;
+        $('#grand-total').text('₹' + grandTotal.toFixed(2));
+    });
+</script>
+
+
+    
+    
+
+
+
+{% endblock content %}
