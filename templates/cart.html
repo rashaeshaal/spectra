@@ -81,23 +81,23 @@
 											<!-- <var class="price"> ₹ {{ cart_item.product.offer_price }}</var> 
 											<small class="text-muted"> {{ cart_item.product.offer_price }} </small>  -->
 										</div>
+                                        <td>
+                                            <div class="col">
+                                                <div class="input-group input-spinner">
+                                                    <div class="input-group-prepend">
+                                                        <a href="{% url 'decrease_quantity' cart_item.id %}" class="btn btn-secondary btn-minus" type="button" id="button-minus">-</a>
+                                                    </div>
+                                                    <input type="text" class="form-control" id="quantity-{{ cart_item.id }}" value="{{ cart_item.quantity }}" readonly>
+                                                    <div class="input-group-append">
+                                                        <a href="{% url 'increase_quantity' cart_item.id %}" class="btn btn-secondary btn-plus" type="button" id="button-plus">+</a>
+                                                    </div>
+                                                </div>
+                                                <!-- <span class="text-muted">Stock: {{ cart_item.product.quantity }}</span> -->
+                                            </div>
+                                        </td>
                                  
 										
-										 <td>
-											<div class="col">
-												<div class="input-group input-spinner">
-													<div class="input-group-prepend">
-													<a href="{% url 'remove_cart' cart_item.product.id cart_item.id %}" class="btn btn-secondary " type="button" id="button-plus"><i class="fa fa-minus"></i>
-													</a>
-												</div>
-												<input type="text" class=" form-control" value="{{ cart_item.quantity }}" readonly>
-												<div class="input-group-append">
-													<a href="{% url 'add_cart' cart_item.product.id %}" class="btn btn-secondary" type="button" id="button-minus"><i class="fa fa-plus"></i>
-													</a>
-												</div>
-											</div>
-										</td>
-                                         
+										
                                          
                                         <td class="total">{{ cart_item.sub_total }}</td>
                                         <!-- <td class="price">
@@ -238,37 +238,7 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('.btn-plus, .btn-minus').on('click', function () {
-            var url = $(this).data('url');
-            var $input = $(this).parent().siblings('input');
-            var oldValue = parseInt($input.val());
-            
-            if ($(this).hasClass('btn-plus')) {
-                var newVal = oldValue + 1;
-            } else {
-                var newVal = oldValue > 1 ? oldValue - 1 : 1;
-            }
-            
-            // Update input value
-            $input.val(newVal);
-            
-            // Update cart using AJAX
-            $.ajax({
-                url: url,
-                method: 'GET',
-                data: { quantity: newVal },
-                success: function () {
-                    // Handle success (if needed)
-                },
-                error: function () {
-                    // Handle error (if needed)
-                }
-            });
-        });
-    });
-</script>
+
 <script>
     $(document).ready(function () {
         $('.btn-plus, .btn-minus').on('click', function () {
@@ -360,6 +330,36 @@
             }
         });
     </script>
+    <script>
+        $(document).ready(function () {
+            // Quantity update logic
+            $('.btn-plus, .btn-minus').on('click', function () {
+                var product_id = $(this).data('product-id');
+                var quantity_field = $('#quantity-' + product_id);
+                var current_quantity = parseInt(quantity_field.val());
+        
+                if ($(this).hasClass('btn-plus')) {
+                    // Check if increasing the quantity would exceed the product's stock
+                    if (current_quantity < {{ cart_item.product.quantity }}) {
+                        var new_quantity = current_quantity + 1;
+                    }
+                } else {
+                    // Ensure the quantity doesn't go below 1
+                    var new_quantity = Math.max(current_quantity - 1, 1);
+                }
+        
+                // Update the quantity input field
+                quantity_field.val(new_quantity);
+        
+                // Make an AJAX request to update the cart or update the total
+                updateCart(product_id, new_quantity);
+            });
+        });
+        
+          
+      </script>
+   
+    
     
     
     

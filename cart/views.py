@@ -345,19 +345,24 @@ def remove_cart_item(request, product_id):
     cart_item.delete()
     return redirect('cartpage')
 
-def increase_quantity(request, cart_item_id):
-    cart_item = get_object_or_404(CartItem, id=cart_item_id)
-    cart_item.quantity += 1
-    cart_item.save()
-    return redirect('cartpage')
-
 def decrease_quantity(request, cart_item_id):
     cart_item = get_object_or_404(CartItem, id=cart_item_id)
+    
+    # Ensure the quantity doesn't go below 1
     if cart_item.quantity > 1:
         cart_item.quantity -= 1
         cart_item.save()
-    else:
-        cart_item.delete()
+    
+    return redirect('cartpage')
+
+def increase_quantity(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, id=cart_item_id)
+    
+    # Check if increasing the quantity would exceed the product's stock
+    if cart_item.quantity < cart_item.product.quantity:
+        cart_item.quantity += 1
+        cart_item.save()
+    
     return redirect('cartpage')
 
 def place_order(request):
