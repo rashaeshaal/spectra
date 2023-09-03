@@ -7,6 +7,70 @@
     <h4>Product List</h4>
     <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#addProductModal">Add New Product</button>
   </div>
+  <!-- Add Product Modal -->
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Add form fields here -->
+        <form method="POST" action="{% url 'add_product' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="product_name">Product Name{{product.id}}</label>
+            <input type="text" class="form-control" id="product_name" name="product_name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="product_category">Category</label>
+            <select class="form-control" id="product_category" name="product_category" required>
+              {% for category in categories %}
+              <option value="{{ category.id }}">{{ category.name }}</option>
+              {% endfor %}
+            </select> 
+          </div>
+          <div class="form-group">
+            <label for="product_brand">Brand</label>
+            <select class="form-control" id="product_brand" name="product_brand" required>
+              {% for brand in brand %}
+              <option value="{{ brand.id }}">{{ brand.brand_name }}</option>
+              {% endfor %}
+            </select> 
+            
+          </div>
+          <div class="form-group">
+            <label for="product_description">Description</label>
+            <input type="text" class="form-control" id="product_description" name="product_description" required>
+          </div>
+          <div class="form-group">
+            <label for="product_mrp">MRP</label>
+            <input type="number" class="form-control" id="product_mrp" name="product_mrp" required>
+          </div>
+         
+          <div class="form-group">
+            <label for="product_quantity">Quantity</label>
+            <input type="number" class="form-control" id="product_quantity" name="product_quantity" required>
+          </div>
+          <!-- <div class="form-group">
+            <label for="offer_price">Offer Price</label>
+            <input type="number" class="form-control" id="product_offer_price" name="offer_price" required>
+          </div>  -->
+          <div class="form-group">
+            <label for="productImage" class="form-label">Product Image</label>
+            <input type="file" class="form-control" id="productImage" name="product_image">
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
   <div class="card-body">
     <table class="table table-striped">
       <thead>
@@ -153,70 +217,7 @@
     </div>
   </div>
 </div>
-<!-- Add Product Modal -->
-<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <!-- Add form fields here -->
-        <form method="POST" action="{% url 'add_product' %}" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="form-group">
-            <label for="product_name">Product Name{{product.id}}</label>
-            <input type="text" class="form-control" id="product_name" name="product_name" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="product_category">Category</label>
-            <select class="form-control" id="product_category" name="product_category" required>
-              {% for category in categories %}
-              <option value="{{ category.id }}">{{ category.name }}</option>
-              {% endfor %}
-            </select> 
-          </div>
-          <div class="form-group">
-            <label for="product_brand">Brand</label>
-            <select class="form-control" id="product_brand" name="product_brand" required>
-              {% for brand in brand %}
-              <option value="{{ brand.id }}">{{ brand.brand_name }}</option>
-              {% endfor %}
-            </select> 
-            
-          </div>
-          <div class="form-group">
-            <label for="product_description">Description</label>
-            <input type="text" class="form-control" id="product_description" name="product_description" required>
-          </div>
-          <div class="form-group">
-            <label for="product_mrp">MRP</label>
-            <input type="number" class="form-control" id="product_mrp" name="product_mrp" required>
-          </div>
-         
-          <div class="form-group">
-            <label for="product_quantity">Quantity</label>
-            <input type="number" class="form-control" id="product_quantity" name="product_quantity" required>
-          </div>
-          <!-- <div class="form-group">
-            <label for="offer_price">Offer Price</label>
-            <input type="number" class="form-control" id="product_offer_price" name="offer_price" required>
-          </div>  -->
-          <div class="form-group">
-            <label for="productImage" class="form-label">Product Image</label>
-            <input type="file" class="form-control" id="productImage" name="product_image">
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+
 {% endfor %}
 
 
