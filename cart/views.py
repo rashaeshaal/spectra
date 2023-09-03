@@ -455,7 +455,7 @@ def place_order(request):
                 order.save()
                 return render(request,"payment.html",
                               {
-                                  "callback_url": "http://" + "127.0.0.1:8000" + "/cart/callback/",
+                                  "callback_url": "http://" + "www.eshaal.shop" + "/cart/callback/",
                                   "razorpay_key": RAZORPAY_KEY_ID,
                                   "order": order,
                                   },
